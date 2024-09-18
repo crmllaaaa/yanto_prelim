@@ -1,0 +1,98 @@
+drop table customers
+drop table orders; 
+drop table shippings;
+
+-- Create the 'users' table
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) CHECK (role IN ('admin', 'staff')) NOT NULL
+);
+-- Create the 'medicines' table
+CREATE TABLE medicines (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    dosage VARCHAR(100) NOT NULL,
+    form VARCHAR(100) NOT NULL
+);
+-- Create the 'suppliers' table
+CREATE TABLE suppliers (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact_person VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL
+);
+-- Create the 'inventory' table
+CREATE TABLE inventory (
+    id INT PRIMARY KEY,
+    medicine_id INT,
+    supplier_id INT,
+    quantity INT NOT NULL,
+    expiration_date DATE NOT NULL,
+    FOREIGN KEY (medicine_id) REFERENCES medicines(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+-- Create the 'purchase_orders' table
+CREATE TABLE purchase_orders (
+    id INT PRIMARY KEY,
+    supplier_id INT,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+
+INSERT INTO users (id, username, password, role) VALUES
+(1, 'MediGuruX', 'Pharma123!', 'admin'),
+(2, 'ScriptSavant', 'M3d1c1n3', 'staff'),
+(3, 'VaxVortex', 'Cure4U!', 'admin'),
+(4, 'HealthHacker', 'Dose!2024', 'staff'),
+(5, 'PharmaPulse', 'M3d!Pass', 'staff'),
+(6, 'DocDynasty', 'Admin4U!', 'admin'),
+(7, 'PillPilot', 'Rx!2024', 'staff'),
+(8, 'TherapyTribe', 'CureMe2024', 'admin');
+
+INSERT INTO medicines (id, name, dosage, form) VALUES
+(1, 'Aspirin', '500 mg', 'Tablet'),
+(2, 'Ibuprofen', '200 mg', 'Capsule'),
+(3, 'Amoxicillin', '250 mg', 'Suspension'),
+(4, 'Paracetamol', '500 mg', 'Tablet'),
+(5, 'Cetirizine', '10 mg', 'Tablet'),
+(6, 'Metformin', '500 mg', 'Tablet'),
+(7, 'Losartan', '50 mg', 'Tablet'),
+(8, 'Omeprazole', '20 mg', 'Capsule'),
+(9, 'Hydrochlorothiazide', '25 mg', 'Tablet'),
+(10, 'Azithromycin', '250 mg', 'Tablet');
+
+INSERT INTO suppliers (id, name, contact_person, phone, email, address) VALUES
+(1, 'MediWave Solutions', 'Aiden Cruz', '+639485151916', 'aiden.cruz@mediemail.com', '123 Health St, Wellness City, Metro Manila'),
+(2, 'PharmaFlex Co.', 'Zoe Reyes', '+639485152917', 'zoe.reyes@pharmaemail.com', '456 Med Ave, Pharma Town, Quezon City, Metro Manila'),
+(3, 'CureSync Labs', 'Liam Santos', '+639485153918', 'liam.santos@curesyncmail.com', '789 Drug Rd, Cure City, Makati City, Metro Manila'),
+(4, 'WellNex Solutions', 'Mia Hernandez', '+639485154919', 'mia.hernandez@wellnexmail.com', '101 Wellness Blvd, Healthville, Pasig City, Metro Manila'),
+(5, 'RxInnovate Inc.', 'Ethan Morales', '+639485155920', 'ethan.morales@rxinnovateemail.com', '202 Medi Ln, Remedy City, Manila, Metro Manila'),
+(6, 'PillVibe Enterprises', 'Sofia Mendoza', '+639485156921', 'sofia.mendoza@pillvibemail.com', '303 Direct Dr, Medtown, Taguig City, Metro Manila'),
+(7, 'PharmaPulse Ltd.', 'Noah Garcia', '+639485157922', 'noah.garcia@pharmapulsemail.com', '404 Mart St, Recovery City, Parañaque City, Metro Manila'),
+(8, 'HealthFusion Corp.', 'Olivia Torres', '+639485158923', 'olivia.torres@healthfusionmail.com', '505 Global Rd, Wellness Park, Alabang, Muntinlupa City, Metro Manila');
+
+INSERT INTO inventory (id, medicine_id, supplier_id, quantity, expiration_date) VALUES
+(1, 1, 1, 100, '2025-06-30'),  -- Aspirin from HealthCorp Pharmaceuticals
+(2, 2, 2, 150, '2025-07-15'),  -- Ibuprofen from MedSupply Inc.
+(3, 3, 3, 200, '2024-11-20'),  -- Amoxicillin from PharmaLink Ltd.
+(4, 4, 4, 120, '2025-01-10'),  -- Paracetamol from Wellness Pharma
+(5, 5, 5, 80, '2025-03-25'),   -- Cetirizine from MediTrust Supplies
+(6, 6, 6, 60, '2024-09-05'),   -- Metformin from PharmaDirect
+(7, 7, 7, 90, '2025-05-30'),   -- Losartan from DrugMart Solutions
+(8, 8, 8, 110, '2024-12-15'),  -- Omeprazole from GlobalMed Supply
+(9, 9, 1, 140, '2024-10-10'),  -- Hydrochlorothiazide from HealthCorp Pharmaceuticals
+(10, 10, 2, 75, '2025-08-20'); -- Azithromycin from MedSupply Inc.
+INSERT INTO purchase_orders (id, supplier_id, order_date, total_amount) VALUES
+(1, 1, '2024-08-15', 5000.00),  -- Order from HealthCorp Pharmaceuticals
+(2, 2, '2024-09-01', 7500.00),  -- Order from MedSupply Inc.
+(3, 3, '2024-07-20', 12000.00), -- Order from PharmaLink Ltd.
+(4, 4, '2024-08-30', 6000.00),  -- Order from Wellness Pharma
+(5, 5, '2024-09-10', 4000.00),  -- Order from MediTrust Supplies
+(6, 6, '2024-10-05', 5500.00),  -- Order from PharmaDirect
+(7, 7, '2024-08-25', 8000.00),  -- Order from DrugMart Solutions
+(8, 8, '2024-09-15', 9000.00);  -- Order from GlobalMed Supply
